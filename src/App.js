@@ -14,6 +14,7 @@ const App = () => {
     showExchange: true,
     showPrevClose: true,
     showSpread: true,
+    showSymbol: true,
     showVolume: true,
   });
 
@@ -22,9 +23,17 @@ const App = () => {
       .then(response => response.json())
       .then(data => {
         setTickerData(data);
+        const thenDate = new Date();
+        const year = thenDate.getFullYear();
+        const month = thenDate.getMonth();
+        const day = thenDate.getDate();
+        const now = new Date().getTime();
+        const thenTime = new Date(year, month, day, 9, 30).getTime() - now;
+        const delay = Math.max(5000, thenTime);
+        
         setTimeout(() => {
           fetchTicker();
-        }, 5000);
+        }, delay);
       })
       fetchTicker()
   }, [])
@@ -68,7 +77,11 @@ const App = () => {
       dirChange = (<span className={posNeg}>{(data.change + '').replace(/-|\+/,"")}</span> );
     }
 
-    const itemName =  (<div>{data.shortName} Price: {data.price}</div>);
+    if (data.symbol === 'G') {
+      document.title = `Equity Quotes (G: ${data.price})`;
+    }
+
+    const itemName =  (<div>{data.shortName} {config.showSymbol && `(${data.symbol})`}: {data.price}</div>);
     const itemChange = config.showChange ? (<div className={posNeg}>{dirImage}Change: {dirChange}</div>) : null;
     const itemBid = config.showBid ? (<div>Bid: {data.bid}</div>) : null;
     const itemAsk = config.showAsk ? (<div>Ask: {data.ask}</div>) : null;

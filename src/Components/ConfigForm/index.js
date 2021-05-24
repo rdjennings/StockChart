@@ -10,6 +10,12 @@ const ConfigForm = ({config, updateConfig}) => {
         <ul className="configList">
           <li>
             <label>
+              Symbol:
+              <input type="checkbox" name="showSymbol" onChange={handleUpdateValue} checked={config.showSymbol} />
+            </label>
+          </li>
+          <li>
+            <label>
               Change:
               <input type="checkbox" name="showChange" onChange={handleUpdateValue} checked={config.showChange} />
             </label>

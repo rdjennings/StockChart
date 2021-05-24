@@ -30,7 +30,8 @@ app.get('/', (req, res) => {
           exchangeDataDelayedBy: q.price.exchangeDataDelayedBy,
           shortName: q.price.shortName,
           exchangeName: q.price.exchangeName,
-          change: q.price.regularMarketChange
+          change: q.price.regularMarketChange,
+          symbol: q.price.symbol
         }}
       }
       return false;
