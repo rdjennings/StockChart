@@ -65,8 +65,11 @@ const App = () => {
       spread = (Math.round((Math.abs(numBid - numAsk)) * 1000))/1000
     }
 
+    let label = '';
+
     if (!isNaN(spread) && spread <= .03) {
       spreadClass = 'spreadBold';
+      label = '*';
     } else if (isNaN(spread)) {
       spreadClass = 'spreadGold';
     } else {
@@ -102,7 +105,7 @@ const App = () => {
     const itemChange = config.showChange ? (<div className={posNeg}>{dirImage}Change: {dirChange}</div>) : null;
     const itemBid = config.showBid ? (<div>Bid: {data.bid}</div>) : null;
     const itemAsk = config.showAsk ? (<div>Ask: {data.ask}</div>) : null;
-    const itemSpread = config.showSpread ? (<div>Spread: {spread}</div>) : null;
+    const itemSpread = config.showSpread ? (<div>Spread: {spread} {label}</div>) : null;
     const itemVolume = config.showVolume ? (<div>Volume: {data.averageVolume}</div>) : null;
     const itemPrevClose = config.showPrevClose ? (<div>PrevClose: {data.prevClose}</div>) : null;
     const itemExchange = config.showExchange ? (<div>Exchange: {data.exchangeName}</div>) : null;
@@ -128,6 +131,7 @@ const App = () => {
         config={config}
         updateConfig={updateConfig}
       />
+      (*: Spread less than or equal to .03)
     </div>
   );
 }
