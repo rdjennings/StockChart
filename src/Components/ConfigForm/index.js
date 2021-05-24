@@ -57,16 +57,6 @@ const ConfigForm = ({config, updateConfig}) => {
             </label>
           </li>
         </ul>
-        <div className="speedWrapper">
-          <div className="currentSpeed">Rotation Speed: {config.speed} ('standard' value is 10 ... lower numbers rotate faster)</div>
-          <input className="rotationSpeed" type="RANGE" min="0" max="50" step="10" defaultValue={config.speed} name="speed" onChange={handleUpdateValue}/>
-        </div>
-        <div>
-          <label>
-            Pause:
-            <input type="checkbox" name="pause" onChange={handleUpdateValue} checked={config.pause} />
-          </label>
-        </div>
       </form>
     </div>
   )

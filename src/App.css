@@ -33,14 +33,7 @@ html, body {
 }
 
 .spreadDim {
-	opacity: .7;
-}
-
-.tdContainer {
-  display: grid;
-  gap: 1em;
-  grid-template-columns: 50px 300px repeat(3, 110px) repeat(3, 210px);
-  margin-bottom: .5em;
+	opacity: .5;
 }
 
 /* config form */
@@ -56,10 +49,6 @@ html, body {
   padding-inline-start: 20px;
 }
 
-.rotationSpeed {
-  width: 530px;
-}
-
 .showHideLabel {
   font-size: 16px;
   font-weight: 600;
@@ -70,27 +59,9 @@ html, body {
 
 .tickerBlocks {
   background-color: #000;
+	color: #0f0;
   display: flex;
   gap: 2em;
   grid-template-columns: auto auto auto;
   padding: 1em 2em;
 }
-
-.tickerContainer {
-	width: 80%;
-	height: 75px;
-	font-size: 182%;
-	margin: 0 auto;
-	border: 4px ridge #0f5;
-	overflow: hidden;
-	position: relative;
-	background: #000 none;
-}
-
-.tickerLine {
-	white-space: nowrap;
-	position: absolute;
-	color: #0f0;
-	top: 23px;
-}
-/* config form end */
