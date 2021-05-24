@@ -1,0 +1,96 @@
+html, body {
+	background: #eae9e4;
+	color: #4a484b;
+	height: 100%;
+	width: 100%;
+}
+
+.dirArrow {
+	height: 24px;
+	position: relative;
+	width: 24px;
+}
+
+.dirArrow.up {
+	background: transparent url('./assets/images/Raise.png') no-repeat 0 0;
+	top: 1px;
+}
+
+.dirArrow.down {
+	background: transparent url(./assets/images/Fall.png) no-repeat 0 0;
+	top: 5px;
+}
+
+.negative {
+	color: #f00;
+}
+.spreadBold {
+	opacity: 1;
+}
+
+.spreadGold {
+	color: #FFD700;
+}
+
+.spreadDim {
+	opacity: .7;
+}
+
+.tdContainer {
+  display: grid;
+  gap: 1em;
+  grid-template-columns: 50px 300px repeat(3, 110px) repeat(3, 210px);
+  margin-bottom: .5em;
+}
+
+/* config form */
+.configForm {
+  justify-content: center;
+  display: flex;
+  margin-block-start: 3em;
+}
+
+.configList {
+  list-style: none;
+  margin-block-start: 0;
+  padding-inline-start: 20px;
+}
+
+.rotationSpeed {
+  width: 530px;
+}
+
+.showHideLabel {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+
+/* config form end */
+
+.tickerBlocks {
+  background-color: #000;
+  display: flex;
+  gap: 2em;
+  grid-template-columns: auto auto auto;
+  padding: 1em 2em;
+}
+
+.tickerContainer {
+	width: 80%;
+	height: 75px;
+	font-size: 182%;
+	margin: 0 auto;
+	border: 4px ridge #0f5;
+	overflow: hidden;
+	position: relative;
+	background: #000 none;
+}
+
+.tickerLine {
+	white-space: nowrap;
+	position: absolute;
+	color: #0f0;
+	top: 23px;
+}
+/* config form end */
