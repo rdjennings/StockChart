@@ -23,13 +23,23 @@ const App = () => {
       .then(response => response.json())
       .then(data => {
         setTickerData(data);
-        const thenDate = new Date();
-        const year = thenDate.getFullYear();
-        const month = thenDate.getMonth();
-        const day = thenDate.getDate();
-        const now = new Date().getTime();
-        const thenTime = new Date(year, month, day, 9, 30).getTime() - now;
-        const delay = Math.max(5000, thenTime);
+        let delay = 5000;
+        let now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const day = now.getDate();
+        let sod = new Date(year, month, day, 9, 30);
+        let eod = new Date(year, month, day, 16, 30);
+
+        if (now.getTime >= sod.getTime() && now.getTime() <= eod.getTime()) {
+          delay = 5000;
+        } else if (now.getTime() > eod.getTime()) {
+          const tomorrow = new Date(year, month, day + 1, 9, 30).getTime();
+          delay = tomorrow - now.getTime();
+        } else if (now.getTime() < sod.getTime()) {
+          delay = sod.getTime() - now.getTime();
+        }
+
         
         setTimeout(() => {
           fetchTicker();
@@ -80,8 +90,15 @@ const App = () => {
     if (data.symbol === 'G') {
       document.title = `Equity Quotes (G: ${data.price})`;
     }
+    let price = data.price + '';
+    const parts = price.split('.');
+    if (parts[1].length === 0) {
+      price += '.00'; 
+    } else if (parts[1].length === 1) {
+      price += '0';
+    }
 
-    const itemName =  (<div>{data.shortName} {config.showSymbol && `(${data.symbol})`}: {data.price}</div>);
+    const itemName =  (<div>{data.shortName} {config.showSymbol && `(${data.symbol})`}: {price}</div>);
     const itemChange = config.showChange ? (<div className={posNeg}>{dirImage}Change: {dirChange}</div>) : null;
     const itemBid = config.showBid ? (<div>Bid: {data.bid}</div>) : null;
     const itemAsk = config.showAsk ? (<div>Ask: {data.ask}</div>) : null;
