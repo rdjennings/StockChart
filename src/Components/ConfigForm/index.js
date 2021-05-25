@@ -28,6 +28,12 @@ const ConfigForm = ({config, updateConfig}) => {
           </li>
           <li>
             <label>
+              % Change:
+              <input type="checkbox" name="showRegularMarketChangePercent" onChange={handleUpdateValue} checked={config.showRegularMarketChangePercent} />
+            </label>
+          </li>
+          <li>
+            <label>
               Bid:
               <input type="checkbox" name="showBid" onChange={handleUpdateValue} checked={config.showBid} />
             </label>

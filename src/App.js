@@ -123,9 +123,7 @@ const App = () => {
     const itemDelay = config.showDelay ? (<div>Exch Delay: {data.exchangeDataDelayedBy}</div>) : null;
     const itemBookValue = config.showBookValue ? (<div>Book Value: {data.bookValue}</div>) : null;
     const itemOpen = config.showOpen ? (<div>Open: {data.open}</div>) : null;
-
-
-    const itemRegularMarketChangePercent = config.showRegularMarketChangePercent ? (<div>Change : {Number( (data.regularMarketChangePercent * 100).toPrecision(2))}%</div>) : null;
+    const itemRegularMarketChangePercent = config.showRegularMarketChangePercent ? (<div>% Change : {Number( (data.regularMarketChangePercent * 100).toPrecision(2))}%</div>) : null;
     return (<div className={spreadClass} key={`symbol_${key}`}>{itemName}{itemChange}{itemOpen}{itemRegularMarketChangePercent}{itemBid}{itemAsk}{itemSpread}{itemVolume}{itemPrevClose}{itemBookValue}{itemExchange}{itemDelay}</div>)
   }
 
