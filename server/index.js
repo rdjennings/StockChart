@@ -33,7 +33,8 @@ app.get('/', (req, res) => {
           change: q.price.regularMarketChange,
           symbol: q.price.symbol,
           bookValue: q.defaultKeyStatistics.bookValue,
-          open: q.summaryDetail.open
+          open: q.summaryDetail.open,
+          regularMarketChangePercent: q.price.regularMarketChangePercent
         }}
       }
       return false;
