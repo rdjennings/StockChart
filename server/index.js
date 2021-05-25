@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 
   yf.quote({
     symbols: ['G', 'MSFT'],
-    modules: ['price', 'summaryDetail']
+    modules: ['price', 'summaryDetail', 'defaultKeyStatistics']
   }, (err, quote) => {
     if (quote === null || quote === undefined) {
       return {};
@@ -31,7 +31,9 @@ app.get('/', (req, res) => {
           shortName: q.price.shortName,
           exchangeName: q.price.exchangeName,
           change: q.price.regularMarketChange,
-          symbol: q.price.symbol
+          symbol: q.price.symbol,
+          bookValue: q.defaultKeyStatistics.bookValue,
+          open: q.summaryDetail.open
         }}
       }
       return false;

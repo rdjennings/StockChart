@@ -21,6 +21,12 @@ html, body {
 	top: 5px;
 }
 
+.footNote {
+	font-size: .85em;
+	font-style: italic;
+	margin-left: 2em;;
+}
+
 .negative {
 	color: #f00;
 }

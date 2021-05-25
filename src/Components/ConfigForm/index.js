@@ -22,6 +22,12 @@ const ConfigForm = ({config, updateConfig}) => {
           </li>
           <li>
             <label>
+              Open:
+              <input type="checkbox" name="showOpen" onChange={handleUpdateValue} checked={config.showOpen} />
+            </label>
+          </li>
+          <li>
+            <label>
               Bid:
               <input type="checkbox" name="showBid" onChange={handleUpdateValue} checked={config.showBid} />
             </label>
@@ -48,6 +54,12 @@ const ConfigForm = ({config, updateConfig}) => {
             <label>
               Previous Close:
               <input type="checkbox" name="showPrevClose" onChange={handleUpdateValue} checked={config.showPrevClose} />
+            </label>
+          </li>
+          <li>
+            <label>
+              Book Value:
+              <input type="checkbox" name="showBookValue" onChange={handleUpdateValue} checked={config.showBookValue} />
             </label>
           </li>
           <li>

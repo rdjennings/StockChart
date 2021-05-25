@@ -9,9 +9,11 @@ const App = () => {
     pause: true,
     showAsk: true,
     showBid: true,
+    showBookValue: true,
     showChange: true,
     showDelay: true,
     showExchange: true,
+    showOpen: true,
     showPrevClose: true,
     showSpread: true,
     showSymbol: true,
@@ -19,6 +21,7 @@ const App = () => {
   });
 
   useEffect(() => {
+    let delayState = false;
     const fetchTicker = () =>fetch('http://localhost:3010')
       .then(response => response.json())
       .then(data => {
@@ -35,11 +38,17 @@ const App = () => {
           delay = 5000;
         } else if (now.getTime() > eod.getTime()) {
           const tomorrow = new Date(year, month, day + 1, 9, 30).getTime();
+          delayState = true;
           delay = tomorrow - now.getTime();
         } else if (now.getTime() < sod.getTime()) {
           delay = sod.getTime() - now.getTime();
+          delayState = true;
         }
 
+        let title = document.title;
+        if (title[0] === '*') title = title.substring(1);
+        if (delayState) title = '*' + title;
+        document.title = title;
         
         setTimeout(() => {
           fetchTicker();
@@ -90,15 +99,16 @@ const App = () => {
       dirChange = (<span className={posNeg}>{(data.change + '').replace(/-|\+/,"")}</span> );
     }
 
-    if (data.symbol === 'G') {
-      document.title = `Equity Quotes (G: ${data.price})`;
-    }
     let price = data.price + '';
     const parts = price.split('.');
     if (parts[1].length === 0) {
       price += '.00'; 
     } else if (parts[1].length === 1) {
       price += '0';
+    }
+
+    if (data.symbol === 'G') {
+      document.title = `Equity Quotes (G: ${price})`;
     }
 
     const itemName =  (<div>{data.shortName} {config.showSymbol && `(${data.symbol})`}: {price}</div>);
@@ -109,8 +119,10 @@ const App = () => {
     const itemVolume = config.showVolume ? (<div>Volume: {data.averageVolume}</div>) : null;
     const itemPrevClose = config.showPrevClose ? (<div>PrevClose: {data.prevClose}</div>) : null;
     const itemExchange = config.showExchange ? (<div>Exchange: {data.exchangeName}</div>) : null;
-    const itemEDelay = config.showDelay ? (<div>Exch Delay: {data.exchangeDataDelayedBy}</div>) : null;
-    return (<div className={spreadClass} key={`symbol_${key}`}>{itemName}{itemChange}{itemBid}{itemAsk}{itemSpread}{itemVolume}{itemPrevClose}{itemExchange}{itemEDelay}</div>)
+    const itemDelay = config.showDelay ? (<div>Exch Delay: {data.exchangeDataDelayedBy}</div>) : null;
+    const itemBookValue = config.showBookValue ? (<div>Book Value: {data.bookValue}</div>) : null;
+    const itemOpen = config.showOpen ? (<div>Open: {data.open}</div>) : null;
+    return (<div className={spreadClass} key={`symbol_${key}`}>{itemName}{itemChange}{itemOpen}{itemBid}{itemAsk}{itemSpread}{itemVolume}{itemPrevClose}{itemBookValue}{itemExchange}{itemDelay}</div>)
   }
 
   const updateConfig = target => {
@@ -131,7 +143,7 @@ const App = () => {
         config={config}
         updateConfig={updateConfig}
       />
-      (*: Spread less than or equal to .03)
+      <div className="footNote">(*: Spread less than or equal to .03)</div>
     </div>
   );
 }
