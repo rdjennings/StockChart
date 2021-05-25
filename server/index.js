@@ -3,44 +3,73 @@ const app = express()
 const yf = require('yahoo-finance');
 const port = 3010
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
 app.use(cors());
 
-app.get('/', (req, res) => {
+let symbols = [];
+var jsonPath = path.join(__dirname, '..', 'server', 'data', 'symbols.txt');
+fs.readFile(jsonPath,  'utf8', (err, data) => {
+  let words = data.split('\n');
+  symbols = words.filter(word => word.length > 0 );
+})
 
-  yf.quote({
-    symbols: ['G', 'MSFT'],
-    modules: ['price', 'summaryDetail', 'defaultKeyStatistics']
-  }, (err, quote) => {
-    if (quote === null || quote === undefined) {
-      return {};
-    }
-    const keys = Object.keys(quote);
-    const response = keys.map(key => {
-      if (key && quote[key]) {
-        const q = quote[key];
-        console.log(q)
-        return {[key]: {
-          price: q.price.regularMarketPrice,
-          bid: q.summaryDetail.bid,
-          ask: q.summaryDetail.ask,
-          prevClose: q.summaryDetail.previousClose,
-          volume: q.summaryDetail.volume,
-          averageVolume: q.summaryDetail.averageVolume,
-          exchangeDataDelayedBy: q.price.exchangeDataDelayedBy,
-          shortName: q.price.shortName,
-          exchangeName: q.price.exchangeName,
-          change: q.price.regularMarketChange,
-          symbol: q.price.symbol,
-          bookValue: q.defaultKeyStatistics.bookValue,
-          open: q.summaryDetail.open,
-          regularMarketChangePercent: q.price.regularMarketChangePercent
-        }}
+app.get('/', (req, res) => {
+  const modules = [
+    'price',
+    'summaryDetail',
+    'defaultKeyStatistics',
+    // 'recommendationTrend'
+  ]
+
+  let response = {};
+
+  try {
+    yf.quote({
+      symbols,
+      modules
+    }, {timeout: 9000}, (err, quote) => {
+      if (err !== null) {
+        console.error({err})
+        response = {};
+      } else if (quote === null || quote === undefined) {
+        console.log('no quote data');
+        response = {};
+      } else {
+      const keys = Object.keys(quote);
+        response = keys.map(key => {
+          if (key && quote[key]) {
+            const q = quote[key];
+            // console.log(q)
+            // q.recommendationTrend.trend.forEach(item => console.log(item))
+            return {[key]: {
+              price: q.price.regularMarketPrice,
+              bid: q.summaryDetail.bid,
+              ask: q.summaryDetail.ask,
+              prevClose: q.summaryDetail.previousClose,
+              volume: q.summaryDetail.volume,
+              averageVolume: q.summaryDetail.averageVolume,
+              exchangeDataDelayedBy: q.price.exchangeDataDelayedBy,
+              shortName: q.price.shortName,
+              exchangeName: q.price.exchangeName,
+              change: q.price.regularMarketChange,
+              symbol: q.price.symbol,
+              bookValue: q.defaultKeyStatistics.bookValue,
+              open: q.summaryDetail.open,
+              regularMarketChangePercent: q.price.regularMarketChangePercent
+            }}
+          }
+          return {};
+        })
       }
-      return false;
+      res.send(response)
     })
-    res.send(response)
-  })
+  } catch (error) {
+    console.error('YF error', {error});
+    res.send({});
+  }
+
 
 })
 

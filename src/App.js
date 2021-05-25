@@ -4,6 +4,7 @@ import ConfigForm from './Components/ConfigForm';
 
 const App = () => {
   const [tickerData, setTickerData] = useState([]);
+  const [delayState, setDelayState] = useState(false);
   
   const [config, setConfig] = useState({
     pause: true,
@@ -22,9 +23,11 @@ const App = () => {
   });
 
   useEffect(() => {
-    let delayState = false;
     const fetchTicker = () =>fetch('http://localhost:3010')
-      .then(response => response.json())
+      .then(response => {
+        const x =response.json();
+        return x;
+      })
       .then(data => {
         setTickerData(data);
         let delay = 5000;
@@ -37,24 +40,28 @@ const App = () => {
 
         if (now.getTime >= sod.getTime() && now.getTime() <= eod.getTime()) {
           delay = 5000;
+          setDelayState(false)
         } else if (now.getTime() > eod.getTime()) {
           const tomorrow = new Date(year, month, day + 1, 9, 30).getTime();
-          delayState = true;
+          setDelayState(true);
           delay = tomorrow - now.getTime();
         } else if (now.getTime() < sod.getTime()) {
           delay = sod.getTime() - now.getTime();
-          delayState = true;
+          setDelayState(true);
         }
-
-        let title = document.title;
-        if (title[0] === '*') title = title.substring(1);
-        if (delayState) title = '*' + title;
-        document.title = title;
         
         setTimeout(() => {
           fetchTicker();
         }, delay);
       })
+      .catch(err => {
+        console.error('App.js fetch error', {err});
+        setTimeout(() => {
+          console.warn('attempting restart', fetchTicker);
+          fetchTicker();
+        }, 5000);
+      })
+      console.log('firing fetchTicker()')
       fetchTicker()
   }, [])
 
@@ -102,15 +109,16 @@ const App = () => {
 
     let price = data.price + '';
     const parts = price.split('.');
-    if (parts[1].length === 0) {
+    if (parts.length < 2 || parts[1].length === 0) {
       price += '.00'; 
     } else if (parts[1].length === 1) {
       price += '0';
-    }
+    } 
 
-    if (data.symbol === 'G') {
-      document.title = `Equity Quotes (G: ${price})`;
-    }
+    let title = data.symbol === 'G' ?  `Equity Quotes (G: ${price})` : document.title;
+    if (title[0] === '*') title = title.substring(1);
+    if (delayState) title = '*' + title;
+    document.title = title;
 
     const itemName =  (<div>{data.shortName} {config.showSymbol && `(${data.symbol})`}: {price}</div>);
     const itemChange = config.showChange ? (<div className={posNeg}>{dirImage}Change: {dirChange}</div>) : null;
@@ -136,9 +144,9 @@ const App = () => {
     <div className="App">
       <div className="blocksContainer">
         <div className="tickerBlocks">
-          {tickerData.map((item) => {
+          {Object.keys(tickerData).length > 0 ? tickerData.map((item) => {
             return tickerBlocks(item)
-          })}
+          }) : (<div>No ticker data available</div>)}
         </div>
       </div>
       <ConfigForm
