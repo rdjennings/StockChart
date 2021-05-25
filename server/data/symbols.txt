@@ -1,4 +1,2 @@
 G
-MSFT
-TSLA
-ABNB
+IGT

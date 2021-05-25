@@ -57,7 +57,8 @@ app.get('/', (req, res) => {
               symbol: q.price.symbol,
               bookValue: q.defaultKeyStatistics.bookValue,
               open: q.summaryDetail.open,
-              regularMarketChangePercent: q.price.regularMarketChangePercent
+              regularMarketChangePercent: q.price.regularMarketChangePercent,
+              beta: q.summaryDetail.beta
             }}
           }
           return {};

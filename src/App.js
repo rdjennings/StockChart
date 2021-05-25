@@ -9,6 +9,7 @@ const App = () => {
   const [config, setConfig] = useState({
     pause: true,
     showAsk: true,
+    showBeta: true,
     showBid: true,
     showBookValue: true,
     showChange: true,
@@ -30,7 +31,7 @@ const App = () => {
       })
       .then(data => {
         setTickerData(data);
-        let delay = 5000;
+        let delay = 9000;
         let now = new Date();
         const year = now.getFullYear();
         const month = now.getMonth();
@@ -39,7 +40,7 @@ const App = () => {
         let eod = new Date(year, month, day, 16, 30);
 
         if (now.getTime >= sod.getTime() && now.getTime() <= eod.getTime()) {
-          delay = 5000;
+          delay = 9000;
           setDelayState(false)
         } else if (now.getTime() > eod.getTime()) {
           const tomorrow = new Date(year, month, day + 1, 9, 30).getTime();
@@ -59,7 +60,7 @@ const App = () => {
         setTimeout(() => {
           console.warn('attempting restart', fetchTicker);
           fetchTicker();
-        }, 5000);
+        }, 9000);
       })
       console.log('firing fetchTicker()')
       fetchTicker()
@@ -127,12 +128,27 @@ const App = () => {
     const itemSpread = config.showSpread ? (<div>Spread: {spread} {label}</div>) : null;
     const itemVolume = config.showVolume ? (<div>Volume: {data.averageVolume}</div>) : null;
     const itemPrevClose = config.showPrevClose ? (<div>PrevClose: {data.prevClose}</div>) : null;
+    const itemBeta = config.showPrevClose ? (<div>Beta: {data.beta}</div>) : null;
     const itemExchange = config.showExchange ? (<div>Exchange: {data.exchangeName}</div>) : null;
     const itemDelay = config.showDelay ? (<div>Exch Delay: {data.exchangeDataDelayedBy}</div>) : null;
     const itemBookValue = config.showBookValue ? (<div>Book Value: {data.bookValue}</div>) : null;
     const itemOpen = config.showOpen ? (<div>Open: {data.open}</div>) : null;
     const itemRegularMarketChangePercent = config.showRegularMarketChangePercent ? (<div>% Change : {Number( (data.regularMarketChangePercent * 100).toPrecision(2))}%</div>) : null;
-    return (<div className={spreadClass} key={`symbol_${key}`}>{itemName}{itemChange}{itemOpen}{itemRegularMarketChangePercent}{itemBid}{itemAsk}{itemSpread}{itemVolume}{itemPrevClose}{itemBookValue}{itemExchange}{itemDelay}</div>)
+    return (<div className={spreadClass} key={`symbol_${key}`}>
+      {itemName}
+      {itemChange}
+      {itemOpen}
+      {itemRegularMarketChangePercent}
+      {itemBid}
+      {itemAsk}
+      {itemSpread}
+      {itemVolume}
+      {itemPrevClose}
+      {itemBeta}
+      {itemBookValue}
+      {itemExchange}
+      {itemDelay}
+    </div>)
   }
 
   const updateConfig = target => {
@@ -146,7 +162,7 @@ const App = () => {
         <div className="tickerBlocks">
           {Object.keys(tickerData).length > 0 ? tickerData.map((item) => {
             return tickerBlocks(item)
-          }) : (<div>No ticker data available</div>)}
+          }) : (<div>No ticker data available. Please stand by.</div>)}
         </div>
       </div>
       <ConfigForm
