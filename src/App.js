@@ -1,10 +1,11 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import './App.css';
 import ConfigForm from './Components/ConfigForm';
 
 const App = () => {
   const [tickerData, setTickerData] = useState([]);
   const [delayState, setDelayState] = useState(false);
+  const timer = useRef();;
   
   const [config, setConfig] = useState({
     pause: true,
@@ -46,24 +47,31 @@ const App = () => {
           const tomorrow = new Date(year, month, day + 1, 9, 30).getTime();
           setDelayState(true);
           delay = tomorrow - now.getTime();
+          console.log(`Will retry on ${new Date(tomorrow).toString()}`);
         } else if (now.getTime() < sod.getTime()) {
           delay = sod.getTime() - now.getTime();
+          console.log(`Will retry on ${new Date(sod.getTime()).toString()}`);
           setDelayState(true);
+        } else {
+          setDelayState(false);
         }
         
-        setTimeout(() => {
+        timer.current = setTimeout(() => {
           fetchTicker();
         }, delay);
       })
       .catch(err => {
         console.error('App.js fetch error', {err});
-        setTimeout(() => {
+        timer.current = setTimeout(() => {
           console.warn('attempting restart', fetchTicker);
           fetchTicker();
         }, 9000);
       })
-      console.log('firing fetchTicker()')
       fetchTicker()
+      return () => {
+        console.log('killing timer');
+        clearTimeout(timer.current);
+      }
   }, [])
 
   const tickerBlocks = item => {
@@ -128,7 +136,7 @@ const App = () => {
     const itemSpread = config.showSpread ? (<div>Spread: {spread} {label}</div>) : null;
     const itemVolume = config.showVolume ? (<div>Volume: {data.averageVolume}</div>) : null;
     const itemPrevClose = config.showPrevClose ? (<div>PrevClose: {data.prevClose}</div>) : null;
-    const itemBeta = config.showPrevClose ? (<div>Beta: {data.beta}</div>) : null;
+    const itemBeta = config.showBeta ? (<div>Beta: {data.beta}</div>) : null;
     const itemExchange = config.showExchange ? (<div>Exchange: {data.exchangeName}</div>) : null;
     const itemDelay = config.showDelay ? (<div>Exch Delay: {data.exchangeDataDelayedBy}</div>) : null;
     const itemBookValue = config.showBookValue ? (<div>Book Value: {data.bookValue}</div>) : null;
