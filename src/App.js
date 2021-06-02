@@ -12,10 +12,10 @@ const App = () => {
     showAsk: true,
     showBeta: true,
     showBid: true,
-    showBookValue: true,
+    showBookValue: false,
     showChange: true,
-    showDelay: true,
-    showExchange: true,
+    showDelay: false,
+    showExchange: false,
     showOpen: true,
     showPrevClose: true,
     showRegularMarketChangePercent: true,
@@ -124,7 +124,7 @@ const App = () => {
       price += '0';
     } 
 
-    let title = data.symbol === 'G' ?  `Equity Quotes (G: ${price})` : document.title;
+    let title = data.symbol === 'G' ?  `Securities Quotes (G: ${price})` : document.title;
     if (title[0] === '*') title = title.substring(1);
     if (delayState) title = '*' + title;
     document.title = title;
