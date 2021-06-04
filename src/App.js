@@ -126,7 +126,8 @@ const App = () => {
       price += '0';
     } 
 
-    let title = data.symbol === 'G' ?  `Securities Quotes (G: ${price})` : document.title;
+    // put the price of the first security in the document title (tab)
+    let title = data.symbol === Object.keys(tickerData[0])[0] ?  `Securities Quotes (${data.symbol}: ${price})` : document.title;
     let wasDelayed = false;
     if (title[0] === '*') {
       title = title.substring(1);
