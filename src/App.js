@@ -10,8 +10,10 @@ const App = () => {
   const [config, setConfig] = useState({
     pause: true,
     showAsk: true,
+    showAskSize: false,
     showBeta: true,
     showBid: true,
+    showBidSize: false,
     showBookValue: false,
     showChange: true,
     showDelay: false,
@@ -44,7 +46,7 @@ const App = () => {
           delay = 9000;
           setDelayState(false)
         } else if (now.getTime() > eod.getTime()) {
-          const tomorrow = new Date(year, month, day + 1, 9, 30).getTime();
+          const tomorrow = new Date(year, month, day, 9, 30).getTime();
           setDelayState(true);
           delay = tomorrow - now.getTime();
           console.log(`Will retry on ${new Date(tomorrow).toString()}`);
@@ -125,14 +127,33 @@ const App = () => {
     } 
 
     let title = data.symbol === 'G' ?  `Securities Quotes (G: ${price})` : document.title;
-    if (title[0] === '*') title = title.substring(1);
-    if (delayState) title = '*' + title;
+    let wasDelayed = false;
+    if (title[0] === '*') {
+      title = title.substring(1);
+      wasDelayed = true;
+    };
+    if (delayState) {
+      title = '*' + title;
+      const beep = document.getElementById('beep');
+      beep.play().catch((err) => 
+        console.log(`Off hours tone did not play as user has not inteacted with the page (${err.message})`)
+      );
+    } else {
+      if (wasDelayed) {
+        const beep = document.getElementById('beep');
+        beep.play().catch((err) => 
+          console.log(`Open hours tone did not play as user has not inteacted with the page (${err.message})`)
+        );
+      }
+    }
     document.title = title;
 
     const itemName =  (<div>{data.shortName} {config.showSymbol && `(${data.symbol})`}: {price}</div>);
     const itemChange = config.showChange ? (<div className={posNeg}>{dirImage}Change: {dirChange}</div>) : null;
     const itemBid = config.showBid ? (<div>Bid: {data.bid}</div>) : null;
+    const itemBidSize = config.showBidSize ? (<div>Bid Size: {data.bidSize}</div>) : null;
     const itemAsk = config.showAsk ? (<div>Ask: {data.ask}</div>) : null;
+    const itemAskSize = config.showAskSize ? (<div>Ask Size: {data.askSize}</div>) : null;
     const itemSpread = config.showSpread ? (<div>Spread: {spread} {label}</div>) : null;
     const itemVolume = config.showVolume ? (<div>Volume: {data.averageVolume}</div>) : null;
     const itemPrevClose = config.showPrevClose ? (<div>PrevClose: {data.prevClose}</div>) : null;
@@ -146,12 +167,14 @@ const App = () => {
       {itemName}
       {itemChange}
       {itemOpen}
+      {itemPrevClose}
       {itemRegularMarketChangePercent}
       {itemBid}
+      {itemBidSize}
       {itemAsk}
+      {itemAskSize}
       {itemSpread}
       {itemVolume}
-      {itemPrevClose}
       {itemBeta}
       {itemBookValue}
       {itemExchange}
@@ -173,11 +196,11 @@ const App = () => {
           }) : (<div>No ticker data available. Please stand by.</div>)}
         </div>
       </div>
+      <div className="footNote">(*: Spread less than or equal to .03)</div>
       <ConfigForm
         config={config}
         updateConfig={updateConfig}
       />
-      <div className="footNote">(*: Spread less than or equal to .03)</div>
     </div>
   );
 }

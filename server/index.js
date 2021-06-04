@@ -46,7 +46,9 @@ app.get('/', (req, res) => {
             return {[key]: {
               price: q.price.regularMarketPrice,
               bid: q.summaryDetail.bid,
+              bidSize: q.summaryDetail.bidSize,
               ask: q.summaryDetail.ask,
+              askSize: q.summaryDetail.askSize,
               prevClose: q.summaryDetail.previousClose,
               volume: q.summaryDetail.volume,
               averageVolume: q.summaryDetail.averageVolume,

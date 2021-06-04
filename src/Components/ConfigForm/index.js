@@ -1,13 +1,24 @@
+import classNames from 'classnames';
+import {useState} from 'react';
 const ConfigForm = ({config, updateConfig}) => {
+
+  const [showOptions, setShowOptions] = useState(false)
   const handleUpdateValue = e => {
     updateConfig(e.target)
+  }
+
+  const showHiddenOptions = (e) => {
+    e.preventDefault();
+    setShowOptions(showOptions => !showOptions);
   }
 
   return (
     <div className="configForm">
       <form>
-        <div className="showHideLabel">Show/hide options:</div>
-        <ul className="configList">
+        <a href="." className="showHideLabel" onClick={showHiddenOptions} role="button">Show/hide options:
+          <span className={classNames('showHideOptions', {'up': !showOptions}, {'down': showOptions})}> </span>
+        </a>
+        <ul className={classNames('configList', {'hidden' : !showOptions})}>
           <li>
             <label>
               Symbol:
@@ -40,8 +51,20 @@ const ConfigForm = ({config, updateConfig}) => {
           </li>
           <li>
             <label>
+              Bid Size:
+              <input type="checkbox" name="showBidSize" onChange={handleUpdateValue} checked={config.showBidSize} />
+            </label>
+          </li>
+          <li>
+            <label>
               Asked:
               <input type="checkbox" name="showAsk" onChange={handleUpdateValue} checked={config.showAsk} />
+            </label>
+          </li>
+          <li>
+            <label>
+              Asked Size:
+              <input type="checkbox" name="showAskSize" onChange={handleUpdateValue} checked={config.showAskSize} />
             </label>
           </li>
           <li>

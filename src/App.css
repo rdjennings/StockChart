@@ -24,7 +24,7 @@ html, body {
 .footNote {
 	font-size: .85em;
 	font-style: italic;
-	margin-left: 2em;;
+	margin: 3em 0 0 2em;
 }
 
 .negative {
@@ -50,16 +50,46 @@ html, body {
 }
 
 .configList {
+	height: 20rem;
   list-style: none;
-  margin-block-start: 0;
+  margin-block-start: 5px;
+	overflow: hidden;
   padding-inline-start: 20px;
+  transition: height 1s;
+	transition-timing-function: ease-in;
+}
+
+.configList.hidden {
+	height: 0;
 }
 
 .showHideLabel {
+	color: #fff;
   font-size: 16px;
   font-weight: 600;
+	text-decoration: none;
 }
 
+.showHideOptions {
+	background-color: transparent;
+	background-repeat: no-repeat;
+	border: none;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;
+	height: 8px;
+	margin-left: .75rem;
+	outline: none;
+	width: 14px;
+}
+
+.showHideOptions.up {
+	background-image: url('./assets//images/caret_up_icon.svg');
+}
+
+.showHideOptions.down {
+	background-image: url('./assets//images/down_icon.svg');
+}
 
 /* config form end */
 
