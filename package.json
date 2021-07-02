@@ -9,6 +9,7 @@
     "classnames": "^2.3.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "fast-csv": "^4.3.6",
     "forever": "^3.0.4",
     "nodemon": "^2.0.7",
     "react": "^17.0.2",
