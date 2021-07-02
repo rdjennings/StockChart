@@ -1,5 +1,0 @@
-G
-CLSK
-SPWR
-MVIS
-RIOT
