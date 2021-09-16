@@ -1,7 +1,7 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const yf = require('yahoo-finance');
-const port = 3010
+const port = 3010;
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
@@ -9,7 +9,7 @@ const path = require('path');
 app.use(cors());
 
 let symbols = [];
-var jsonPath = path.join(__dirname, '..', 'server', 'data', 'symbols.txt');
+let jsonPath = path.join(__dirname, '..', 'server', 'data', 'symbols.txt');
 fs.readFile(jsonPath,  'utf8', (err, data) => {
   let words = data.split('\n');
   symbols = words.filter(word => word.length > 0 );
@@ -60,7 +60,9 @@ app.get('/', (req, res) => {
               bookValue: q.defaultKeyStatistics.bookValue,
               open: q.summaryDetail.open,
               regularMarketChangePercent: q.price.regularMarketChangePercent,
-              beta: q.summaryDetail.beta
+              beta: q.summaryDetail.beta,
+              SMA50: q.summaryDetail.fiftyDayAverage,
+              SMA200: q.summaryDetail.twoHundredDayAverage
             }}
           }
           return {};

@@ -93,6 +93,18 @@ const ConfigForm = ({config, updateConfig}) => {
           </li>
           <li>
             <label>
+              SMA50:
+              <input type="checkbox" name="showSMA50" onChange={handleUpdateValue} checked={config.showSMA50} />
+            </label>
+          </li>
+          <li>
+            <label>
+              SMA200:
+              <input type="checkbox" name="showSMA200" onChange={handleUpdateValue} checked={config.showSMA200} />
+            </label>
+          </li>
+          <li>
+            <label>
               Book Value:
               <input type="checkbox" name="showBookValue" onChange={handleUpdateValue} checked={config.showBookValue} />
             </label>

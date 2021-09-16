@@ -6,7 +6,7 @@ html, body {
 }
 
 ::selection {
-	color: #fff;
+  color: #fff;
 }
 
 .dirArrow {
@@ -42,12 +42,8 @@ html, body {
 	color: #FFD700;
 }
 
-.spreadDim div {
+.spreadDim {
 	opacity: .5;
-}
-
-.spreadDim div.negative {
-	opacity: 1;
 }
 
 /* config form */
@@ -105,7 +101,7 @@ html, body {
   background-color: #000;
 	color: #0f0;
   display: flex;
-	flex-wrap: wrap;
   gap: 2em;
+  grid-template-columns: auto auto auto;
   padding: 1em 2em;
 }
